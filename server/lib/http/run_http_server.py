@@ -5,6 +5,7 @@ The requests will contain the user input and the username,
 """
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from langgraph.graph import StateGraph
 
 
@@ -12,9 +13,11 @@ def run_http_server(graph: StateGraph):
     """Run the server chatbot in the console."""
 
     app = Flask(__name__)
+    CORS(app)
 
     @app.route("/chat", methods=["POST"])
     def chat():
+        print(request)
         print(request.json)
         user_input = request.json["user_input"]
         thread_id = request.json["thread_id"]

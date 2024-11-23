@@ -1,1 +1,1 @@
-# 
+Cote client : possibilité de faire "choisir un magasin" qui change le dataset dans le back et potentiellement le prompt système pour spécifier la marque

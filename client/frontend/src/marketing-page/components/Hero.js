@@ -36,12 +36,21 @@ const StyledBox = styled('div')(({ theme }) => ({
   }),
 }));
 
-export default function Hero() {
+export default function Hero({ 
+  pastMessages, 
+  setPastMessages, 
+  setUsername, 
+  sendMessage, 
+  currentMessage, 
+  setCurrentMessage 
+}) {
+
+
   return (
     <Box
       id="hero"
       sx={(theme) => ({
-        width: '100%',
+        width: '99vw',
         backgroundRepeat: 'no-repeat',
         backgroundImage:
           'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 90%), transparent)',
@@ -65,7 +74,8 @@ export default function Hero() {
           useFlexGap
           sx={{ alignItems: 'center', width: { xs: '100%', sm: '70%' } }}
         >
-          <Typography
+
+          {/* <Typography
             variant="h1"
             sx={{
               display: 'flex',
@@ -89,8 +99,8 @@ export default function Hero() {
               
               aider
             </Typography>
-          </Typography>
-          <Typography
+          </Typography> */}
+          {/* <Typography
             sx={{
               textAlign: 'center',
               color: 'text.secondary',
@@ -98,38 +108,61 @@ export default function Hero() {
             }}
           >
             Prêts à faire l'expérience du futur du shopping ? C'est ici que ça se passe :
-          </Typography>
+          </Typography> */}
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={1}
             useFlexGap
-            sx={{ pt: 2, width: { xs: '100%', sm: '350px' } }}
+            sx={{ pt: 2, width: { xs: '100%', sm: '50vw' } }}
           >
-            <InputLabel htmlFor="email-hero" sx={visuallyHidden}>
-              Email
+            <InputLabel htmlFor="username-hero" sx={visuallyHidden}>
+              message
             </InputLabel>
             <TextField
-              id="email-hero"
+              id="message-hero"
               hiddenLabel
               size="small"
               variant="outlined"
               aria-label="Entrez votre message"
-              placeholder="Votre message"
+              placeholder="Nom d'utilisateur"
               fullWidth
               slotProps={{
                 htmlInput: {
                   autoComplete: 'off',
-                  'aria-label': 'Enter your email address',
+                  'aria-label': 'Entrez votre message',
                 },
               }}
+              style={{width: '30%'}}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <InputLabel htmlFor="message-hero" sx={visuallyHidden}>
+              message
+            </InputLabel>
+            <TextField
+              id="message-hero"
+              hiddenLabel
+              size="small"
+              variant="outlined"
+              aria-label="Entrez votre message"
+              placeholder="Votre envie du moment"
+              fullWidth
+              slotProps={{
+                htmlInput: {
+                  autoComplete: 'off',
+                  'aria-label': 'Entrez votre message',
+                },
+              }}
+              onChange={(e) => setCurrentMessage(e.target.value)}
+              value={currentMessage}
             />
             <Button
               variant="contained"
               color="primary"
               size="small"
               sx={{ minWidth: 'fit-content' }}
+              onClick={() => sendMessage()}
             >
-              On y va !
+              Envoyer
             </Button>
           </Stack>
           <Typography
@@ -137,14 +170,14 @@ export default function Hero() {
             color="text.secondary"
             sx={{ textAlign: 'center' }}
           >
-            En cliquant sur le bouton &quot;On y va !&quot; vous accceptez nos &nbsp;
+            En cliquant sur le bouton &quot;Envoyer&quot; vous accceptez nos &nbsp;
             <Link href="#" color="primary">
               Conditions d'utilisation
             </Link>
             .
           </Typography>
         </Stack>
-        <StyledBox id="image" />
+        {/* <StyledBox id="image" /> */}
       </Container>
     </Box>
   );
