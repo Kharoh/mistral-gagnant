@@ -19,10 +19,12 @@ def run_http_server(graph: StateGraph):
         user_input = request.json["user_input"]
         thread_id = request.json["thread_id"]
 
+        print(thread_id)
+
         event = graph.invoke(
-            {"messages": [user_input]}, config={"thread_id": thread_id}
+            {"messages": [user_input]},
+            config={"configurable": {"thread_id": thread_id}},
         )
-        print(event)
         response = event["messages"][-1].content
 
         return jsonify({"response": response})

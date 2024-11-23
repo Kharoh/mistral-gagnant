@@ -7,60 +7,27 @@ if __name__ == "__main__":
     # Test the server chatbot
     response = requests.post(
         "http://localhost:5000/chat",
-        json={"user_input": "What do you know about LangGraph?", "thread_id": "test"},
-    )
-    print(response.text)
-
-    response = requests.post(
-        "http://localhost:5000/chat",
-        json={"user_input": "What is the purpose of LangGraph?", "thread_id": "test"},
+        json={"user_input": "Hi, my name is bob", "thread_id": "test1"},
+        timeout=1000,
     )
     print(response.json())
 
     response = requests.post(
         "http://localhost:5000/chat",
-        json={"user_input": "What is the purpose of LangGraph?", "thread_id": "test"},
+        json={
+            "user_input": "What's my name ?",
+            "thread_id": "test2",
+        },
+        timeout=1000,
     )
     print(response.json())
 
     response = requests.post(
         "http://localhost:5000/chat",
-        json={"user_input": "What is the purpose of LangGraph?", "thread_id": "test"},
-    )
-    print(response.json())
-
-    response = requests.post(
-        "http://localhost:5000/chat",
-        json={"user_input": "What is the purpose of LangGraph?", "thread_id": "test"},
-    )
-    print(response.json())
-
-    response = requests.post(
-        "http://localhost:5000/chat",
-        json={"user_input": "What is the purpose of LangGraph?", "thread_id": "test"},
-    )
-    print(response.json())
-
-    response = requests.post(
-        "http://localhost:5000/chat",
-        json={"user_input": "What is the purpose of LangGraph?", "thread_id": "test"},
-    )
-    print(response.json())
-
-    response = requests.post(
-        "http://localhost:5000/chat",
-        json={"user_input": "What is the purpose of LangGraph?", "thread_id": "test"},
-    )
-    print(response.json())
-
-    response = requests.post(
-        "http://localhost:5000/chat",
-        json={"user_input": "What is the purpose of LangGraph?", "thread_id": "test"},
-    )
-    print(response.json())
-
-    response = requests.post(
-        "http://localhost:5000/chat",
-        json={"user_input": "What is the purpose of LangGraph?", "thread_id": "test"},
+        json={
+            "user_input": "What's my name ?",
+            "thread_id": "test1",
+        },
+        timeout=1000,
     )
     print(response.json())
