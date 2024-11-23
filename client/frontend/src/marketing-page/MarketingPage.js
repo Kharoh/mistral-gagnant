@@ -22,7 +22,7 @@ export default function MarketingPage(props) {
 
   const sendMessage = () => {
     // update first time past messages
-    setPastMessages([...pastMessages, currentMessage])
+    setPastMessages([currentMessage, ...pastMessages])
     // clear input field
     setCurrentMessage("")
     // send message to server localhost:5000/chat as user_input and retrieve the response with http post
@@ -40,7 +40,7 @@ export default function MarketingPage(props) {
     .then(response => response.json())
     .then(data => {
       // update state with response from server
-      setPastMessages([...pastMessages, currentMessage, data.response])
+      setPastMessages([data.response, currentMessage, ...pastMessages])
       // Il faut remettre le current message car le fetch wrap le state sans le current message...
     })
     .catch(error => console.error('Error:', error));
@@ -66,6 +66,9 @@ export default function MarketingPage(props) {
         paddingTop: '20vh',
         marginBottom: '5vh',
         overflowY: 'scroll',
+        flexDirection: 'column-reverse',
+        display: 'flex',
+        alignItems: 'center',
       })}>
         {pastMessages.map((message, index) => {
           return <Typography 
@@ -74,7 +77,7 @@ export default function MarketingPage(props) {
             textAlign: 'left',
             color: 'text.secondary',
             width: { sm: '50%', md: '50%' },
-            alignSelf: { sm: 'flex-start', md: 'flex-start' },
+            alignSelf: { sm: 'center', md: 'center' },
             justifySelf: { sm: 'center', md: 'center'},
             marginTop: { sm: '10px', md: '10px'},
           }}
@@ -83,7 +86,8 @@ export default function MarketingPage(props) {
             <Typography sx={{color: 'text.primary'}}>
              {index % 2 === 0 ? "Assistant: " : (username || "Utilisateur") + ": " } 
             </Typography>
-             {message}</Typography>
+             {message}
+          </Typography>
         })}
       </Box>
       <Hero 
