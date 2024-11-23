@@ -154,6 +154,11 @@ export default function Hero({
               }}
               onChange={(e) => setCurrentMessage(e.target.value)}
               value={currentMessage}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  sendMessage();
+                }
+              }}
             />
             <Button
               variant="contained"

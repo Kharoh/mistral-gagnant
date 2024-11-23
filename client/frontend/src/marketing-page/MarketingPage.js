@@ -11,14 +11,18 @@ import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import AppTheme from '../shared-theme/AppTheme';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 export default function MarketingPage(props) {
 
   const [currentMessage, setCurrentMessage] = React.useState("");
-  const [pastMessages, setPastMessages] = React.useState([]);
+  const [pastMessages, setPastMessages] = React.useState(["Bonjour ! Je suis votre assistant virtuel de mode. Comment puis-je vous aider aujourd'hui ?"])
   const [username, setUsername] = React.useState("");
 
   const sendMessage = () => {
+    // update first time past messages
+    setPastMessages([...pastMessages, currentMessage])
     // clear input field
     setCurrentMessage("")
     // send message to server localhost:5000/chat as user_input and retrieve the response with http post
@@ -37,30 +41,51 @@ export default function MarketingPage(props) {
     .then(data => {
       // update state with response from server
       setPastMessages([...pastMessages, currentMessage, data.response])
+      // Il faut remettre le current message car le fetch wrap le state sans le current message...
     })
     .catch(error => console.error('Error:', error));
   }
-
-  React.useEffect(() => console.log(pastMessages), [pastMessages])
-
-  // listen for the response from the server to store the messages in pastMessages
-  // React.useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetch('http://localhost:5000/chat', {
-  //       method: 'GET',
-  //     })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       setPastMessages(data)
-  //     })
-  //   }, 1000);
-  //   return () => clearInterval(interval);
-  // }, []);
 
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
       <AppAppBar />
+      <Box 
+      id="messages"
+      sx={(theme) => ({
+        width: '100%',
+        backgroundRepeat: 'no-repeat',
+
+        backgroundImage:
+          'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 90%), transparent)',
+        ...theme.applyStyles('dark', {
+          backgroundImage:
+            'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)',
+        }),
+        height:'70vh',
+        paddingTop: '20vh',
+        marginBottom: '5vh',
+        overflowY: 'scroll',
+      })}>
+        {pastMessages.map((message, index) => {
+          return <Typography 
+          
+          sx={{
+            textAlign: 'left',
+            color: 'text.secondary',
+            width: { sm: '50%', md: '50%' },
+            alignSelf: { sm: 'flex-start', md: 'flex-start' },
+            justifySelf: { sm: 'center', md: 'center'},
+            marginTop: { sm: '10px', md: '10px'},
+          }}
+          
+          key={index}>
+            <Typography sx={{color: 'text.primary'}}>
+             {index % 2 === 0 ? "Assistant: " : (username || "Utilisateur") + ": " } 
+            </Typography>
+             {message}</Typography>
+        })}
+      </Box>
       <Hero 
         pastMessages={pastMessages} 
         setPastMessages={setPastMessages} 
