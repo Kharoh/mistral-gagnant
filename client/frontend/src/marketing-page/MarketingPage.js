@@ -131,7 +131,6 @@ export default function MarketingPage(props) {
         sendMessage={sendMessage}
       />
       <div>
-        <LogoCollection />
         {/* <Features />
         <Divider />
         <Testimonials />
@@ -143,6 +142,7 @@ export default function MarketingPage(props) {
         <FAQ />
         <Divider /> */}
         <ProductShowcase/>
+        <LogoCollection />
         <Footer />
       </div>
     </AppTheme>

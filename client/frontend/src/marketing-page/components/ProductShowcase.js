@@ -65,9 +65,11 @@ export default function ProductShowcase() {
         component="p"
         variant="subtitle2"
         align="center"
-        sx={{ color: 'text.secondary' }}
+        sx={{ color: 'text.primary' }}
+        fontSize="2rem"
+        textStyle="emphasize"
       >
-        Nos produits mis en avant :
+        Nos produits :
       </Typography>
     <Container maxWidth="lg">
       <Box
