@@ -14,6 +14,7 @@ import AppTheme from '../shared-theme/AppTheme';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { io } from "socket.io-client";
+import ProductShowcase from './components/ProductShowcase';
 
 
 export default function MarketingPage(props) {
@@ -124,6 +125,7 @@ export default function MarketingPage(props) {
         <Divider />
         <FAQ />
         <Divider /> */}
+        <ProductShowcase/>
         <Footer />
       </div>
     </AppTheme>
