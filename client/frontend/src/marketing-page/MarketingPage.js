@@ -13,6 +13,8 @@ import Footer from './components/Footer';
 import AppTheme from '../shared-theme/AppTheme';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { io } from "socket.io-client";
+
 
 export default function MarketingPage(props) {
 
@@ -20,30 +22,48 @@ export default function MarketingPage(props) {
   const [pastMessages, setPastMessages] = React.useState(["Bonjour ! Je suis votre assistant virtuel de mode. Comment puis-je vous aider aujourd'hui ?"])
   const [username, setUsername] = React.useState("");
 
+  const SOCKET_SERVER_URL = "http://localhost:5000";
+  const [socket, setSocket] = React.useState();
+
+  React.useEffect(() => {
+    const newSocket = io(SOCKET_SERVER_URL);
+    setSocket(newSocket);
+
+    // Listen for messages from the server
+    newSocket.on("message", (data) => {
+      console.log("Message from server:", data);
+      setServerResponse(data);
+    });
+
+    // Handle disconnection
+    newSocket.on("disconnect", () => {
+      console.log("Disconnected from server");
+    });
+
+    newSocket.on("chat", (data) => {
+      setPastMessages((prevMessages) => [data.response, ...prevMessages]);
+    })
+
+    newSocket.on("username", (data) => {
+      console.log("testtest")
+      setUsername(data.username)
+    })
+
+    // Clean up connection on component unmount
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
   const sendMessage = () => {
     // update first time past messages
     setPastMessages([currentMessage, ...pastMessages])
     // clear input field
     setCurrentMessage("")
-    // send message to server localhost:5000/chat as user_input and retrieve the response with http post
-    fetch('http://localhost:5000/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user_input: currentMessage,
-        thread_id: username,
-      }),
-      timeout: 1000,
+
+    socket.emit("chat", {
+      user_input: currentMessage,
     })
-    .then(response => response.json())
-    .then(data => {
-      // update state with response from server
-      setPastMessages([data.response, currentMessage, ...pastMessages])
-      // Il faut remettre le current message car le fetch wrap le state sans le current message...
-    })
-    .catch(error => console.error('Error:', error));
   }
 
   return (
