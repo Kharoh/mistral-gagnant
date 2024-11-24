@@ -57,10 +57,10 @@ export default function Footer() {
           <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
             <SitemarkIcon />
             <Typography variant="body2" gutterBottom sx={{ fontWeight: 600, mt: 2 }}>
-              Join the newsletter
+              Rejoindre notre newsletter
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-              Subscribe for weekly updates. No spams ever!
+              Abonnez-vous à notre newsletter pour en avant-première nos nouveautés
             </Typography>
             <InputLabel htmlFor="email-newsletter">Email</InputLabel>
             <Stack direction="row" spacing={1} useFlexGap>
@@ -70,8 +70,8 @@ export default function Footer() {
                 size="small"
                 variant="outlined"
                 fullWidth
-                aria-label="Enter your email address"
-                placeholder="Your email address"
+                aria-label="Entrez votre adresse mail"
+                placeholder="Votre adresse mail"
                 slotProps={{
                   htmlInput: {
                     autoComplete: 'off',
@@ -86,7 +86,7 @@ export default function Footer() {
                 size="small"
                 sx={{ flexShrink: 0 }}
               >
-                Subscribe
+                S'abonner
               </Button>
             </Stack>
           </Box>
@@ -99,19 +99,13 @@ export default function Footer() {
           }}
         >
           <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Product
+            Notre produit
           </Typography>
           <Link color="text.secondary" variant="body2" href="#">
             Features
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Testimonials
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
             Devenir partenaire
-          </Link>
-          <Link color="text.secondary" variant="body2" href="#">
-            Pricing
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
             FAQs
@@ -125,16 +119,16 @@ export default function Footer() {
           }}
         >
           <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Company
+            Notre entreprise
           </Typography>
           <Link color="text.secondary" variant="body2" href="#">
-            About us
+            Qui sommes nous ?
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Careers
+            Emplois
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Press
+            Presse
           </Link>
         </Box>
         <Box
@@ -145,13 +139,13 @@ export default function Footer() {
           }}
         >
           <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-            Legal
+            Mentions légales
           </Typography>
           <Link color="text.secondary" variant="body2" href="#">
-            Terms
+            Conditions d'utilisation
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
-            Privacy
+            Protection de vos données
           </Link>
           <Link color="text.secondary" variant="body2" href="#">
             Contact

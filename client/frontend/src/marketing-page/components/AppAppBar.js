@@ -13,6 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import Sitemark from './SitemarkIcon';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
+import {useNavigate} from 'react-router-dom'
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -32,9 +33,14 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate() ;
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
+  };
+
+  const navigateToInfoPage = () => {
+    navigate('/vos_infos')
   };
 
   return (
@@ -53,21 +59,22 @@ export default function AppAppBar() {
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
             <Sitemark />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              {/*
               <Button variant="text" color="info" size="small">
                 Features
               </Button>
-              <Button variant="text" color="info" size="small">
-                Testimonials
-              </Button>
-              <Button variant="text" color="info" size="small">
+               */}
+              <Button variant="text" color="info" size="small" onClick={navigateToInfoPage}>
                 Devenir partenaire
               </Button>
+              {/*
               <Button variant="text" color="info" size="small">
                 Pricing
               </Button>
               <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
                 FAQ
               </Button>
+              */}
               <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
                 Blog
               </Button>
@@ -81,10 +88,10 @@ export default function AppAppBar() {
             }}
           >
             <Button color="primary" variant="text" size="small">
-              Sign in
+              Se connecter
             </Button>
             <Button color="primary" variant="contained" size="small">
-              Sign up
+              S'inscrire
             </Button>
             <ColorModeIconDropdown />
           </Box>
@@ -114,22 +121,17 @@ export default function AppAppBar() {
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
-
-                <MenuItem>Features</MenuItem>
-                <MenuItem>Testimonials</MenuItem>
-                <MenuItem>Highlights</MenuItem>
-                <MenuItem>Pricing</MenuItem>
-                <MenuItem>FAQ</MenuItem>
+                <MenuItem>Devenir partenaire</MenuItem>
                 <MenuItem>Blog</MenuItem>
                 <Divider sx={{ my: 3 }} />
                 <MenuItem>
                   <Button color="primary" variant="contained" fullWidth>
-                    Sign up
+                    S'inscrire
                   </Button>
                 </MenuItem>
                 <MenuItem>
                   <Button color="primary" variant="outlined" fullWidth>
-                    Sign in
+                    Se connecter
                   </Button>
                 </MenuItem>
               </Box>
