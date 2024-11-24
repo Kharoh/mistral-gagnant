@@ -7,11 +7,13 @@ from langgraph.checkpoint.memory import MemorySaver
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_mistralai import MistralAIEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
-import server.lib.langchain.retrieval as retrieval
 from typing_extensions import TypedDict, Annotated
 from langgraph.graph.message import add_messages
 import socketio
 from langgraph.prebuilt import ToolNode, tools_condition
+
+from lib.langchain.create_embedding import create_embedding
+from lib.langchain.retrieval import retrieve
 
 
 def create_chatbot(sio: socketio.Server):
@@ -37,16 +39,23 @@ def create_chatbot(sio: socketio.Server):
         api_key=os.environ["MISTRAL_API_KEY"],
     )
 
-    tools = []
+    vector_store = create_embedding()
+
+    def retrieve_tool(query: str):
+        """Retrieve fashion articles data
+        - query: The articles to search for."""
+        results = retrieve(query, vector_store)
+        return {"articles": results}
+
+    tools = [retrieve_tool]
     llm_with_tools = llm.bind_tools(tools)
 
     prompt = ChatPromptTemplate.from_messages(
         [
             (
                 "system",
-                "You are a cordial and highly knowledgeable fashion sales advisor. Your primary goal is to assist customers in finding the perfect clothing items that match their preferences, needs, and style. Be friendly, professional, and patient in all your interactions. \
-                You have access to a database of clothing items currently in stock. Use this tool to recommend specific products based on the customer's requirements, such as size, color, budget, or occasion. Always prioritize providing the best possible advice to ensure customer satisfaction. \
-                If a customer asks a question, respond clearly and warmly. If they describe their needs or preferences, suggest clothing options that align with their description. When necessary, ask clarifying questions to understand their needs better. Maintain a positive and welcoming tone throughout the conversation.",
+                "Vous êtes un conseiller de vente en mode, cordial et extrêmement compétent. Votre objectif principal est d'aider les clients à trouver les vêtements parfaits qui correspondent à leurs préférences, besoins et style. Soyez amical, professionnel et patient dans toutes vos interactions. Vous avez accès à une base de données des vêtements actuellement en stock au travers d'un outil. Utilisez cet outil pour recommander des produits en fonction des besoins des clients, tels que la taille, la couleur, le budget ou l'occasion. Priorisez toujours la satisfaction du client en fournissant les meilleurs conseils possibles.\
+                Si un client pose une question, répondez de manière claire et chaleureuse. Si le client décrit ses besoins ou préférences, proposez des options vestimentaires qui correspondent à sa description en utilisant l'outil. Maintenez toujours un ton positif et accueillant tout au long de la conversation. Les réponses doivent être les plus humaines possibles, sans listes ni caractères markdown.",
             ),
             MessagesPlaceholder(variable_name="messages"),
         ]
@@ -74,7 +83,13 @@ def create_chatbot(sio: socketio.Server):
 
     return graph
 
+
 def embedding(docs):
-    embeddings = MistralAIEmbeddings(model="mistral-embed",)
-    vectorstore = InMemoryVectorStore.from_texts(docs, embedding=embeddings,)
-    return(vectorstore)
+    embeddings = MistralAIEmbeddings(
+        model="mistral-embed",
+    )
+    vectorstore = InMemoryVectorStore.from_texts(
+        docs,
+        embedding=embeddings,
+    )
+    return vectorstore

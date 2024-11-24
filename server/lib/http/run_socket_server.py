@@ -31,8 +31,6 @@ def run_socket_server(graph: StateGraph, sio: socketio.Server):
         )
         response = event["messages"][-1].content
 
-        print(response)
-
         sio.emit("chat", {"response": response}, to=sid)
         # sio.emit("username", {"username": "User"}, to=sid)
 
