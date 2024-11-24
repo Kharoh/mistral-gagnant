@@ -10,7 +10,9 @@ from langgraph.graph import StateGraph, START, END, MessagesState
 from langchain_mistralai import ChatMistralAI
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
+from langchain_mistralai import MistralAIEmbeddings
+from langchain_core.vectorstores import InMemoryVectorStore
+import embedding
 
 def create_chatbot():
     """Create a chatbot graph that uses MistralAI to generate responses."""
