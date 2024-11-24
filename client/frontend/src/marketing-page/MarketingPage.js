@@ -79,6 +79,7 @@ export default function MarketingPage(props) {
         height:'70vh',
         paddingTop: '20vh',
         marginBottom: '5vh',
+        paddingBottom: '1vh',
         overflowY: 'scroll',
         flexDirection: 'column-reverse',
         display: 'flex',
@@ -88,17 +89,33 @@ export default function MarketingPage(props) {
           return <Typography 
           
           sx={{
-            textAlign: 'left',
+            textAlign: 'justify',
             color: 'text.secondary',
             width: { sm: '50%', md: '50%' },
             alignSelf: { sm: 'center', md: 'center' },
             justifySelf: { sm: 'center', md: 'center'},
             marginTop: { sm: '10px', md: '10px'},
+            backgroundColor: (pastMessages.length - index) % 2 === 0 ? "lightblue" : "lightgreen",
+            padding: "15px",
+            borderRadius: "10px",
+            animation: 'slide-in 0.5s ease-in-out',
+            '@keyframes slide-in': {
+              '0%': {
+              transform: 'translateY(50%)',
+              opacity: 0,
+              },
+              '100%': {
+              transform: 'translateX(0)',
+              opacity: 1,
+              },
+            },
+            fontSize: '1rem',
+            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
           }}
           
-          key={index}>
-            <Typography sx={{color: 'text.primary'}}>
-             {index % 2 === 0 ? "Assistant: " : (username || "Utilisateur") + ": " } 
+          key={pastMessages.length - index}>
+            <Typography sx={{color: 'text.primary', fontSize: '1rem'}}>
+             {(pastMessages.length - index) % 2 !== 0 ? "Assistant: " : (username || "Utilisateur") + ": " } 
             </Typography>
              {message}
           </Typography>
