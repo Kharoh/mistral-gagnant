@@ -39,6 +39,7 @@ const StyledBox = styled('div')(({ theme }) => ({
 export default function Hero({ 
   pastMessages, 
   setPastMessages, 
+  username,
   setUsername, 
   sendMessage, 
   currentMessage, 
@@ -134,6 +135,7 @@ export default function Hero({
               }}
               style={{width: '30%'}}
               onChange={(e) => setUsername(e.target.value)}
+              value={username}
             />
             <InputLabel htmlFor="message-hero" sx={visuallyHidden}>
               message
