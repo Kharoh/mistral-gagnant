@@ -20,13 +20,13 @@ Le projet se découpe en deux dossiers principaux : server (backend) et client (
     * frontend : site web de Modestral
     * images : images pour le site
 
-## Tutoriels langchain
+# Tutoriels langchain
 
 https://python.langchain.com/docs/tutorials/
 
-## Installation des dépendances langchain (getting started de langchain)
+# Installation des dépendances langchain (getting started de langchain)
 
-pip install langchain_mistralai
+pip install -r requirements.txt
 
 ## Structure .env
 
