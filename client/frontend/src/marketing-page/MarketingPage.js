@@ -29,12 +29,6 @@ export default function MarketingPage(props) {
     const newSocket = io(SOCKET_SERVER_URL);
     setSocket(newSocket);
 
-    // Listen for messages from the server
-    newSocket.on("message", (data) => {
-      console.log("Message from server:", data);
-      setServerResponse(data);
-    });
-
     // Handle disconnection
     newSocket.on("disconnect", () => {
       console.log("Disconnected from server");
@@ -45,7 +39,6 @@ export default function MarketingPage(props) {
     })
 
     newSocket.on("username", (data) => {
-      console.log("testtest")
       setUsername(data.username)
     })
 

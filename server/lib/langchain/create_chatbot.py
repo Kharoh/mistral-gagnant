@@ -1,13 +1,12 @@
 import os
 
-from langgraph.graph import StateGraph, START, END, MessagesState
+from langgraph.graph import StateGraph, START, END
 
 from langchain_mistralai import ChatMistralAI
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from typing_extensions import TypedDict, Annotated
 from langgraph.graph.message import add_messages
-from lib.langchain.set_username import create_set_username_tool
 import socketio
 from langgraph.prebuilt import ToolNode, tools_condition
 
@@ -16,9 +15,14 @@ def create_chatbot(sio: socketio.Server):
     """Create a chatbot graph that uses MistralAI to generate responses."""
 
     class State(TypedDict):
-        """Define the state of the chatbot."""
+        """Define the state of the chatbot.
+        - messages: A list of messages in the conversation.
+        - sid: The socket id of the user.
+        """
 
+        # messages: A list of messages in the conversation.
         messages: Annotated[list, add_messages]
+        # sid: The socket id of the user.
         sid: str
 
     graph_builder = StateGraph(State)
@@ -30,8 +34,8 @@ def create_chatbot(sio: socketio.Server):
         api_key=os.environ["MISTRAL_API_KEY"],
     )
 
-    set_username_tool = create_set_username_tool(sio)
-    llm_with_tools = llm.bind_tools([set_username_tool])
+    tools = []
+    llm_with_tools = llm.bind_tools(tools)
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -47,12 +51,12 @@ def create_chatbot(sio: socketio.Server):
 
     def chatbot(state: State):
         """Chatbot node that uses MistralAI to generate responses."""
-        chain = prompt | llm_with_tools
-        response = chain.invoke(state)
+        graph = prompt | llm_with_tools
+        response = graph.invoke(state)
         return {"messages": response}
 
     graph_builder.add_node("chatbot", chatbot)
-    graph_builder.add_node("tools", ToolNode(tools=[set_username_tool]))
+    graph_builder.add_node("tools", ToolNode(tools))
     graph_builder.add_edge("tools", "chatbot")
     graph_builder.add_conditional_edges(
         "chatbot",

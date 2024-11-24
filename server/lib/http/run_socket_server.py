@@ -15,7 +15,6 @@ def run_socket_server(graph: StateGraph, sio: socketio.Server):
     @sio.event
     def connect(sid, environ):
         print(f"Client connected: {sid}")
-        sio.emit("message", "Welcome to the server!", to=sid)
 
     @sio.event
     def disconnect(sid):
@@ -26,18 +25,16 @@ def run_socket_server(graph: StateGraph, sio: socketio.Server):
         user_input = data["user_input"]
         thread_id = sid
 
-        print(user_input)
-        print(thread_id)
-
         event = graph.invoke(
             {"messages": [user_input], "sid": sid},
-            config={"configurable": {"thread_id": thread_id}},
+            config={"configurable": {"thread_id": thread_id, "sio": sio}},
         )
         response = event["messages"][-1].content
 
         print(response)
 
-        sio.emit("chat", {"response": response}, room=sid)
+        sio.emit("chat", {"response": response}, to=sid)
+        # sio.emit("username", {"username": "User"}, to=sid)
 
     # Define a basic Flask route
     @app.route("/")
