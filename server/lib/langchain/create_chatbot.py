@@ -5,6 +5,9 @@ from langgraph.graph import StateGraph, START, END
 from langchain_mistralai import ChatMistralAI
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_mistralai import MistralAIEmbeddings
+from langchain_core.vectorstores import InMemoryVectorStore
+import server.lib.langchain.retrieval as retrieval
 from typing_extensions import TypedDict, Annotated
 from langgraph.graph.message import add_messages
 import socketio
@@ -70,3 +73,8 @@ def create_chatbot(sio: socketio.Server):
     graph = graph_builder.compile(checkpointer=memory)
 
     return graph
+
+def embedding(docs):
+    embeddings = MistralAIEmbeddings(model="mistral-embed",)
+    vectorstore = InMemoryVectorStore.from_texts(docs, embedding=embeddings,)
+    return(vectorstore)
