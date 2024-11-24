@@ -1,11 +1,12 @@
 from dotenv import load_dotenv
 from lib.langchain.create_chatbot import create_chatbot
-from lib.langchain.run_server_chat import run_server_chat
-from lib.http.run_http_server import run_http_server
+from lib.http.run_socket_server import run_socket_server
+from lib.http.create_sio import create_sio
 
 load_dotenv()
 
 
 if __name__ == "__main__":
-    chatbot_graph = create_chatbot()
-    run_http_server(chatbot_graph)
+    sio = create_sio()
+    chatbot_graph = create_chatbot(sio)
+    run_socket_server(chatbot_graph, sio)

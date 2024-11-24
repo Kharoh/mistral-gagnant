@@ -1,26 +1,30 @@
 import os
 
-from typing import Annotated
-
-from typing_extensions import TypedDict
-
 from langgraph.graph import StateGraph, START, END, MessagesState
 
-# from langgraph.graph.message import add_messages
 from langchain_mistralai import ChatMistralAI
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_mistralai import MistralAIEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
 import server.lib.langchain.retrieval as retrieval
+from typing_extensions import TypedDict, Annotated
+from langgraph.graph.message import add_messages
+from lib.langchain.set_username import create_set_username_tool
+import socketio
+from langgraph.prebuilt import ToolNode, tools_condition
 
-def create_chatbot():
+
+def create_chatbot(sio: socketio.Server):
     """Create a chatbot graph that uses MistralAI to generate responses."""
 
-    # class State(TypedDict):
-    #     messages: Annotated[list, add_messages]
+    class State(TypedDict):
+        """Define the state of the chatbot."""
 
-    graph_builder = StateGraph(state_schema=MessagesState)
+        messages: Annotated[list, add_messages]
+        sid: str
+
+    graph_builder = StateGraph(State)
 
     llm = ChatMistralAI(
         model="mistral-small-2409",
@@ -28,6 +32,9 @@ def create_chatbot():
         max_retries=2,
         api_key=os.environ["MISTRAL_API_KEY"],
     )
+
+    set_username_tool = create_set_username_tool(sio)
+    llm_with_tools = llm.bind_tools([set_username_tool])
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -41,13 +48,20 @@ def create_chatbot():
         ]
     )
 
-    def chatbot(state: MessagesState):
+    def chatbot(state: State):
         """Chatbot node that uses MistralAI to generate responses."""
-        chain = prompt | llm
+        chain = prompt | llm_with_tools
         response = chain.invoke(state)
         return {"messages": response}
 
     graph_builder.add_node("chatbot", chatbot)
+    graph_builder.add_node("tools", ToolNode(tools=[set_username_tool]))
+    graph_builder.add_edge("tools", "chatbot")
+    graph_builder.add_conditional_edges(
+        "chatbot",
+        tools_condition,
+        {"tools": "tools", END: END},
+    )
     graph_builder.add_edge(START, "chatbot")
     graph_builder.add_edge("chatbot", END)
 
