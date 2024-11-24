@@ -76,7 +76,7 @@ export default function AppAppBar() {
               </Button>
               */}
               <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                Blog
+                Catalogue
               </Button>
             </Box>
           </Box>
@@ -122,7 +122,7 @@ export default function AppAppBar() {
                   </IconButton>
                 </Box>
                 <MenuItem>Devenir partenaire</MenuItem>
-                <MenuItem>Blog</MenuItem>
+                <MenuItem>Catalogue</MenuItem>
                 <Divider sx={{ my: 3 }} />
                 <MenuItem>
                   <Button color="primary" variant="contained" fullWidth>

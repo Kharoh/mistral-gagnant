@@ -18,7 +18,7 @@ function Copyright() {
     <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
       {'Copyright © '}
       <Link color="text.secondary" href="https://mui.com/">
-        Sitemark
+        MODESTRAL
       </Link>
       &nbsp;
       {new Date().getFullYear()}
@@ -60,7 +60,7 @@ export default function Footer() {
               Rejoindre notre newsletter
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-              Abonnez-vous à notre newsletter pour en avant-première nos nouveautés
+              Abonnez-vous à notre newsletter pour être informé en avant-première de nos nouveautés
             </Typography>
             <InputLabel htmlFor="email-newsletter">Email</InputLabel>
             <Stack direction="row" spacing={1} useFlexGap>
@@ -164,13 +164,13 @@ export default function Footer() {
       >
         <div>
           <Link color="text.secondary" variant="body2" href="#">
-            Privacy Policy
+            Politique de confidentialité
           </Link>
           <Typography sx={{ display: 'inline', mx: 0.5, opacity: 0.5 }}>
             &nbsp;•&nbsp;
           </Typography>
           <Link color="text.secondary" variant="body2" href="#">
-            Terms of Service
+            Conditions d'utilisation
           </Link>
           <Copyright />
         </div>
